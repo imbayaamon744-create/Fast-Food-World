@@ -7,7 +7,7 @@ A responsive, static website for Fast Food Restaurant. It introduces the restaur
 - **Home (`index.html`)** — restaurant introduction, story, services, menu, owners, location map, and contact details.
 - **Order (`order.html`)** — choose menu items and quantities, manage a basket, select pickup or delivery, and review an order total.
 - **Styles (`app.css`)** — shared layout, colors, and responsive styling.
-- **Images (`images/`)** — background and owner images used by the site.
+- **Images (`images/`)** — page background, founder portraits, and delivery partner logos.
 
 The order page is a demo only. It calculates a basket and displays a confirmation-style summary in the browser; it does not send or save orders and has no backend or payment processing.
 
