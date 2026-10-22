@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#21150f">
+    <title>Order Online | Fast Food Restaurant</title>
+    <link rel="stylesheet" href="app.css">
+    <style>
+        .order-page {
+            width: min(1100px, 92%);
+            margin: 0 auto;
+            padding: 32px 0 64px;
+        }
+
+        .order-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 18px max(4%, calc((100% - 1100px) / 2));
+            background: rgba(29, 19, 14, 0.95);
+            border-bottom: 1px solid rgba(242, 182, 93, 0.25);
+        }
+
+        .order-nav a {
+            color: var(--color-ink);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .order-nav .back-link {
+            color: var(--color-gold);
+        }
+
+        .order-heading {
+            margin-bottom: 26px;
+            text-align: center;
+        }
+
+        .order-heading h1 {
+            margin-bottom: 8px;
+            color: var(--color-gold);
+            font-size: clamp(2rem, 5vw, 3rem);
+        }
+
+        .order-heading p {
+            color: var(--color-muted);
+        }
+
+        .order-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.9fr);
+            align-items: start;
+            gap: 24px;
+        }
+
+        .order-panel {
+            padding: 24px;
+            background: var(--color-panel);
+            border: 1px solid var(--color-wood);
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .order-panel h2 {
+            margin-bottom: 16px;
+            font-size: 1.45rem;
+        }
+
+        .order-panel h3 {
+            margin: 22px 0 12px;
+            color: var(--color-gold);
+            font-size: 1.05rem;
+        }
+
+        .order-form,
+        .add-item-form {
+            display: grid;
+            gap: 14px;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 110px;
+            gap: 12px;
+        }
+
+        .order-form label,
+        .add-item-form label {
+            display: grid;
+            gap: 6px;
+            color: var(--color-ink);
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+
+        .order-form input,
+        .order-form select,
+        .order-form textarea,
+        .add-item-form input,
+        .add-item-form select {
+            width: 100%;
+            min-height: 44px;
+            padding: 10px 12px;
+            color: var(--color-ink);
+            background: #2c1d15;
+            border: 1px solid #795437;
+            border-radius: 8px;
+            font: inherit;
+        }
+
+        .order-form textarea {
+            min-height: 84px;
+            resize: vertical;
+        }
+
+        .order-form input:focus,
+        .order-form select:focus,
+        .order-form textarea:focus,
+        .add-item-form input:focus,
+        .add-item-form select:focus {
+            outline: 2px solid var(--color-gold);
+            outline-offset: 2px;
+        }
+
+        .add-item-btn,
+        .place-order-btn {
+            min-height: 46px;
+            padding: 11px 16px;
+            color: var(--color-espresso);
+            background: linear-gradient(135deg, var(--color-gold), #f6d89a);
+            border: 0;
+            border-radius: 8px;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        .add-item-btn:hover,
+        .place-order-btn:hover {
+            filter: brightness(1.06);
+            transform: translateY(-1px);
+        }
+
+        .cart-items {
+            display: grid;
+            gap: 10px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(242, 182, 93, 0.15);
+            border-radius: 8px;
+        }
+
+        .cart-item-name {
+            display: block;
+            font-weight: 700;
+        }
+
+        .cart-item-detail,
+        .empty-cart,
+        .order-note {
+            color: var(--color-muted);
+            font-size: 0.88rem;
+        }
+
+        .remove-item-btn {
+            padding: 7px 9px;
+            color: #ffd9c9;
+            background: transparent;
+            border: 1px solid #80513b;
+            border-radius: 6px;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        .remove-item-btn:hover {
+            background: rgba(184, 94, 34, 0.2);
+        }
+
+        .cart-totals {
+            display: grid;
+            gap: 8px;
+            margin: 18px 0;
+            padding-top: 14px;
+            border-top: 1px solid var(--color-wood);
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .total-row.grand-total {
+            margin-top: 4px;
+            color: var(--color-gold);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .place-order-btn {
+            width: 100%;
+        }
+
+        .order-message {
+            margin-top: 14px;
+            padding: 12px;
+            color: var(--color-ink);
+            background: rgba(242, 182, 93, 0.12);
+            border: 1px solid rgba(242, 182, 93, 0.35);
+            border-radius: 8px;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        @media (max-width: 760px) {
+            .order-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .order-nav {
+                padding: 16px 4%;
+            }
+        }
+
+        @media (max-width: 440px) {
+            .order-panel {
+                padding: 18px;
+            }
+
+            .field-row {
+                grid-template-columns: 1fr 88px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="order-nav" aria-label="Main navigation">
+        <a href="index.html">Fast Food Restaurant</a>
+        <a class="back-link" href="index.html">← Back to home</a>
+    </nav>
+
+    <main class="order-page">
+        <header class="order-heading">
+            <h1>Make it a delicious day</h1>
+            <p>Choose your favourites, build your order, and tell us how to get it to you.</p>
+        </header>
+
+        <div class="order-layout">
+            <section class="order-panel" aria-labelledby="menu-heading">
+                <h2 id="menu-heading">Build your order</h2>
+                <form class="add-item-form" id="add-item-form">
+                    <div class="field-row">
+                        <label for="menu-item">
+                            Choose a snack or drink
+                            <select id="menu-item" name="menu-item">
+                                <optgroup label="Signature samosas">
+                                    <option value="beef-samosa" data-name="Beef Samosa" data-price="100">Beef Samosa — KSh 100</option>
+                                    <option value="chicken-samosa" data-name="Chicken Samosa" data-price="100">Chicken Samosa — KSh 100</option>
+                                    <option value="veggie-samosa" data-name="Vegetable Samosa" data-price="80">Vegetable Samosa — KSh 80</option>
+                                    <option value="crispy-chicken-samosa" data-name="Crispy Chicken Samosa" data-price="120">Crispy Chicken Samosa — KSh 120</option>
+                                </optgroup>
+                                <optgroup label="Snacks &amp; treats">
+                                    <option value="bhajias" data-name="Crispy Potato Bhajias" data-price="150">Crispy Potato Bhajias — KSh 150</option>
+                                    <option value="spring-rolls" data-name="Spring Rolls" data-price="120">Spring Rolls — KSh 120</option>
+                                    <option value="smokie-bites" data-name="Sausages &amp; Smokie Bites" data-price="100">Sausages &amp; Smokie Bites — KSh 100</option>
+                                </optgroup>
+                                <optgroup label="Drinks &amp; dips">
+                                    <option value="soda" data-name="Chilled Soda" data-price="80">Chilled Soda — KSh 80</option>
+                                    <option value="lemonade" data-name="Fresh Lemonade" data-price="120">Fresh Lemonade — KSh 120</option>
+                                    <option value="iced-tea" data-name="Iced Tea" data-price="100">Iced Tea — KSh 100</option>
+                                    <option value="smoothie" data-name="Fruit Smoothie" data-price="180">Fruit Smoothie — KSh 180</option>
+                                    <option value="spiced-chai" data-name="Spiced Chai" data-price="80">Spiced Chai — KSh 80</option>
+                                    <option value="tamarind-dip" data-name="Tamarind Dip" data-price="40">Tamarind Dip — KSh 40</option>
+                                    <option value="mint-chutney" data-name="Fresh Mint Chutney" data-price="40">Fresh Mint Chutney — KSh 40</option>
+                                </optgroup>
+                            </select>
+                        </label>
+                        <label for="item-quantity">
+                            Quantity
+                            <input id="item-quantity" name="item-quantity" type="number" min="1" max="20" value="1" required>
+                        </label>
+                    </div>
+                    <button class="add-item-btn" type="submit">Add to order</button>
+                </form>
+
+                <h3>Your basket <span id="item-count">(0 items)</span></h3>
+                <ul class="cart-items" id="cart-items" aria-live="polite">
+                    <li class="empty-cart" id="empty-cart">Your basket is empty. Add something tasty to get started.</li>
+                </ul>
+                <p class="order-note">Sample menu prices are shown in Kenyan shillings (KSh).</p>
+            </section>
+
+            <section class="order-panel" aria-labelledby="details-heading">
+                <h2 id="details-heading">Your order details</h2>
+                <form class="order-form" id="order-form">
+                    <label for="customer-name">
+                        Your name
+                        <input id="customer-name" name="customer-name" type="text" autocomplete="name" required>
+                    </label>
+                    <label for="customer-phone">
+                        Phone number
+                        <input id="customer-phone" name="customer-phone" type="tel" autocomplete="tel" placeholder="e.g. 0712 345 678" required>
+                    </label>
+                    <label for="fulfilment">
+                        How would you like your order?
+                        <select id="fulfilment" name="fulfilment">
+                            <option value="pickup">Pickup — free</option>
+                            <option value="delivery">Delivery — KSh 150</option>
+                        </select>
+                    </label>
+                    <label id="address-field" for="delivery-address" >
+                        Delivery address
+                        <input id="delivery-address" name="delivery-address" type="text" autocomplete="street-address">
+                    </label>
+                    <label for="order-notes">
+                        Special instructions <span class="order-note">(optional)</span>
+                        <textarea id="order-notes" name="order-notes" placeholder="Allergies, preferred sauce, or anything else we should know"></textarea>
+                    </label>
+                    <div class="cart-totals" aria-live="polite">
+                        <div class="total-row"><span>Subtotal</span><span id="subtotal">KSh 0</span></div>
+                        <div class="total-row"><span>Delivery</span><span id="delivery-fee">KSh 0</span></div>
+                        <div class="total-row grand-total"><span>Total</span><span id="grand-total">KSh 0</span></div>
+                    </div>
+                    <button class="place-order-btn" type="submit">Review my order</button>
+                </form>
+                <p class="order-note">This page is a demo. Submitting displays your order summary here; it does not send an order to the restaurant.</p>
+                <div class="order-message" id="order-message" role="status" aria-live="polite" hidden></div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        const cart = new Map();
+        const addItemForm = document.getElementById("add-item-form");
+        const orderForm = document.getElementById("order-form");
+        const menuItem = document.getElementById("menu-item");
+        const itemQuantity = document.getElementById("item-quantity");
+        const cartItems = document.getElementById("cart-items");
+        const emptyCart = document.getElementById("empty-cart");
+        const itemCount = document.getElementById("item-count");
+        const fulfilment = document.getElementById("fulfilment");
+        const addressField = document.getElementById("address-field");
+        const deliveryAddress = document.getElementById("delivery-address");
+        const orderMessage = document.getElementById("order-message");
+        const deliveryPrice = 150;
+
+        function formatPrice(amount) {
+            return `KSh ${amount.toLocaleString("en-KE")}`;
+        }
+
+        function renderCart() {
+            cartItems.querySelectorAll(".cart-item").forEach((item) => item.remove());
+            emptyCart.hidden = cart.size > 0;
+
+            let subtotal = 0;
+            let count = 0;
+
+            cart.forEach((item, id) => {
+                subtotal += item.price * item.quantity;
+                count += item.quantity;
+
+                const row = document.createElement("li");
+                row.className = "cart-item";
+
+                const description = document.createElement("span");
+                const name = document.createElement("span");
+                name.className = "cart-item-name";
+                name.textContent = item.name;
+                const detail = document.createElement("span");
+                detail.className = "cart-item-detail";
+                detail.textContent = `${item.quantity} × ${formatPrice(item.price)}`;
+                description.append(name, detail);
+
+                const actions = document.createElement("span");
+                actions.className = "total-row";
+                actions.style.alignItems = "center";
+                const lineTotal = document.createElement("strong");
+                lineTotal.textContent = formatPrice(item.price * item.quantity);
+                const removeButton = document.createElement("button");
+                removeButton.className = "remove-item-btn";
+                removeButton.type = "button";
+                removeButton.textContent = "Remove";
+                removeButton.setAttribute("aria-label", `Remove ${item.name} from basket`);
+                removeButton.addEventListener("click", () => {
+                    cart.delete(id);
+                    renderCart();
+                });
+                actions.append(lineTotal, removeButton);
+                row.append(description, actions);
+                cartItems.append(row);
+            });
+
+            const delivery = fulfilment.value === "delivery" && count > 0 ? deliveryPrice : 0;
+            document.getElementById("subtotal").textContent = formatPrice(subtotal);
+            document.getElementById("delivery-fee").textContent = formatPrice(delivery);
+            document.getElementById("grand-total").textContent = formatPrice(subtotal + delivery);
+            itemCount.textContent = `(${count} ${count === 1 ? "item" : "items"})`;
+        }
+
+        addItemForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            if (!itemQuantity.reportValidity()) return;
+
+            const option = menuItem.selectedOptions[0];
+            const id = option.value;
+            const quantity = Number(itemQuantity.value);
+            const existing = cart.get(id);
+            if (existing && existing.quantity + quantity > 20) {
+                itemQuantity.setCustomValidity("You can add up to 20 of each item.");
+                itemQuantity.reportValidity();
+                itemQuantity.setCustomValidity("");
+                return;
+            }
+
+            cart.set(id, {
+                name: option.dataset.name,
+                price: Number(option.dataset.price),
+                quantity: (existing?.quantity ?? 0) + quantity
+            });
+            itemQuantity.value = "1";
+            orderMessage.hidden = true;
+            renderCart();
+        });
+
+        fulfilment.addEventListener("change", () => {
+            const isDelivery = fulfilment.value === "delivery";
+            addressField.hidden = !isDelivery;
+            deliveryAddress.required = isDelivery;
+            renderCart();
+        });
+
+        orderForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            if (!orderForm.reportValidity()) return;
+            if (cart.size === 0) {
+                orderMessage.textContent = "Please add at least one item to your basket before reviewing your order.";
+                orderMessage.hidden = false;
+                return;
+            }
+
+            const name = document.getElementById("customer-name").value.trim();
+            const total = document.getElementById("grand-total").textContent;
+            orderMessage.textContent = `Thanks, ${name}! Your ${fulfilment.value} order is ready for review. The total is ${total}. This demo has not sent your order.`;
+            orderMessage.hidden = false;
+        });
+
+        renderCart();
+    </script>
+</body>
+</html>
