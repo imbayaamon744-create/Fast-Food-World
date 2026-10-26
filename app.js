@@ -6,11 +6,17 @@
         const cartItems = document.getElementById("cart-items");
         const emptyCart = document.getElementById("empty-cart");
         const itemCount = document.getElementById("item-count");
+        const basketHeading = document.getElementById("basket-heading");
+        const removeConfirmation = document.getElementById("remove-confirmation");
+        const removeConfirmationMessage = document.getElementById("remove-confirmation-message");
+        const cancelRemoveButton = document.getElementById("cancel-remove");
+        const confirmRemoveButton = document.getElementById("confirm-remove");
         const fulfilment = document.getElementById("fulfilment");
         const addressField = document.getElementById("address-field");
         const deliveryAddress = document.getElementById("delivery-address");
         const orderMessage = document.getElementById("order-message");
         const deliveryPrice = 150;
+        let itemToRemove = null;
 
         function formatPrice(amount) {
             return `KSh ${amount.toLocaleString("en-KE")}`;
@@ -50,8 +56,9 @@
                 removeButton.textContent = "Remove";
                 removeButton.setAttribute("aria-label", `Remove ${item.name} from basket`);
                 removeButton.addEventListener("click", () => {
-                    cart.delete(id);
-                    renderCart();
+                    itemToRemove = id;
+                    removeConfirmationMessage.textContent = `Are you sure you want to remove ${item.name} from your basket?`;
+                    removeConfirmation.showModal();
                 });
                 actions.append(lineTotal, removeButton);
                 row.append(description, actions);
@@ -64,6 +71,24 @@
             document.getElementById("grand-total").textContent = formatPrice(subtotal + delivery);
             itemCount.textContent = `(${count} ${count === 1 ? "item" : "items"})`;
         }
+
+        cancelRemoveButton.addEventListener("click", () => {
+            removeConfirmation.close();
+        });
+
+        confirmRemoveButton.addEventListener("click", () => {
+            if (itemToRemove === null) return;
+
+            cart.delete(itemToRemove);
+            itemToRemove = null;
+            removeConfirmation.close();
+            renderCart();
+            basketHeading.focus();
+        });
+
+        removeConfirmation.addEventListener("close", () => {
+            itemToRemove = null;
+        });
 
         addItemForm.addEventListener("submit", (event) => {
             event.preventDefault();
@@ -108,7 +133,7 @@
 
             const name = document.getElementById("customer-name").value.trim();
             const total = document.getElementById("grand-total").textContent;
-            orderMessage.textContent = `Thanks, ${name}! Your ${fulfilment.value} order is ready for review. The total is ${total}. This demo has not sent your order.`;
+            orderMessage.textContent = `Thanks, ${name}! Your ${fulfilment.value} order is ready for review. The total is ${total}. `;
             orderMessage.hidden = false;
         });
 
