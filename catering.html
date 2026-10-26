@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2b2822">
+    <title>Catering &amp; Event Bookings | Fast Food Restaurant</title>
+    <link rel="icon" type="image/png" href="images/background.png">
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="catering.css">
+</head>
+<body class="catering-body">
+    <nav class="catering-nav" aria-label="Main navigation">
+        <a href="index.html">Fast Food Restaurant</a>
+        <div class="catering-nav-links">
+            
+            <a href="#packages">Packages &amp; prices</a>
+            <a href="#booking">Book catering</a>
+            
+        </div>
+    </nav>
+
+    <header class="catering-hero">
+        <div class="catering-hero__content">
+            <p class="catering-eyebrow">Gather, celebrate, eat well</p>
+            <h1>Good food for your gathering</h1>
+            <p>Planning a party, meeting or celebration? Tell us about your event and we’ll get back to you to discuss the menu and a quote.</p>
+            <a class="catering-hero__cta" href="#booking">Start a booking request</a>
+        </div>
+    </header>
+
+    <main class="catering-main">
+        <section id="packages" aria-labelledby="packages-heading">
+            <div class="catering-section-heading">
+                <p class="catering-eyebrow">Made for your occasion</p>
+                <h2 id="packages-heading">Catering packages</h2>
+                <p>Choose a starting point for your event. We'll confirm the menu, availability and final price with you before your booking is confirmed.</p>
+            </div>
+
+            <div class="catering-packages">
+                <article class="catering-package">
+                    <h3>Classic</h3>
+                    <p class="catering-package__type">Price based on your event</p>
+                    <p class="catering-package__price">Request a quote</p>
+                    <p class="catering-package__description">A simple starting point for gatherings. Share your guest count and preferences so we can suggest a menu.</p>
+                    <button class="catering-package__button" type="button" data-package="Classic">Choose Classic</button>
+                </article>
+
+                <article class="catering-package catering-package--featured">
+                    <h3>Premium</h3>
+                    <p class="catering-package__type">Price based on your event</p>
+                    <p class="catering-package__price">Request a quote</p>
+                    <p class="catering-package__description">Planning a special celebration? Tell us what you have in mind and we’ll discuss suitable options.</p>
+                    <button class="catering-package__button" type="button" data-package="Premium">Choose Premium</button>
+                </article>
+
+                <article class="catering-package">
+                    <h3>Deluxe</h3>
+                    <p class="catering-package__type">Custom event quote</p>
+                    <p class="catering-package__price">Request a quote</p>
+                    <p class="catering-package__description">For a more tailored event request, send us the details and we'll follow up to plan it with you.</p>
+                    <button class="catering-package__button" type="button" data-package="Deluxe">Choose Deluxe</button>
+                </article>
+            </div>
+            <p class="catering-pricing-note">Catering prices have not yet been set on this website. We’ll provide a quote based on your guest count, menu and location; a booking is confirmed only after we reply.</p>
+        </section>
+
+        <section class="catering-booking" id="booking" aria-labelledby="booking-heading">
+            <div class="catering-form-card">
+                <h2 id="booking-heading">Request a catering booking</h2>
+                <p class="catering-form-intro">Share your event details. Selecting a date will automatically show you the day of the week.</p>
+
+                <form class="catering-form" id="catering-booking-form">
+                    <label>
+                        Your name
+                        <input name="customerName" type="text" autocomplete="name" required>
+                    </label>
+                    <label>
+                        Phone number
+                        <input name="phone" type="tel" autocomplete="tel" placeholder="e.g. 0712 345 678" required>
+                    </label>
+                    <label>
+                        Event date
+                        <input id="event-date" name="eventDate" type="date" required>
+                    </label>
+                    <label>
+                        Day of the week
+                        <input id="event-day" name="eventDay" type="text" placeholder="Choose a date first" readonly aria-live="polite">
+                    </label>
+                    <label>
+                        Event location
+                        <input name="location" type="text" autocomplete="street-address" placeholder="Town, venue or full address" required>
+                    </label>
+                    <label>
+                        Number of guests
+                        <input name="guestCount" type="number" min="1" step="1" placeholder="e.g. 30" required>
+                    </label>
+                    <label class="full-width">
+                        Package
+                        <select id="catering-package" name="package" required>
+                            <option value="">Choose a package</option>
+                            <option value="Classic">Classic </option>
+                            <option value="Premium">Premium </option>
+                            <option value="Deluxe">Deluxe </option>
+                            
+                        </select>
+                    </label>
+                    <label class="full-width">
+                        Event details or food preferences <span>(optional)</span>
+                        <textarea name="eventDetails" placeholder="Tell us about the occasion, menu preferences or any other requests."></textarea>
+                    </label>
+                    <button class="catering-submit full-width" type="submit">Prepare booking request</button>
+                </form>
+
+                <div class="catering-result" id="booking-result" role="status" aria-live="polite" hidden>
+                    <h3>Your request is ready</h3>
+                    <p id="booking-summary"></p>
+                    <p>This is a request, not a confirmed booking. Email it to us and wait for our reply to confirm availability and price.</p>
+                    <p><a id="booking-email-link" href="mailto:info@fastfoodrestaurant.com">Email booking request</a></p>
+                </div>
+            </div>
+
+            <aside class="catering-help-card">
+                <h2>What happens next?</h2>
+                <p>After you prepare your request, use the email link to send the event details to our team. We’ll discuss the menu, availability and final price with you.</p>
+                <p>Need help? Call <a href="tel:+254700000000">+254 700 000 000</a> or email <a href="mailto:info@fastfoodrestaurant.com">info@fastfoodrestaurant.com</a>.</p>
+                <p>Bookings are only confirmed after our team responds.</p>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="catering-footer">
+        <p>&copy; 2026 Fast Food Restaurant. Fresh &bull; Tasty &bull; Affordable</p>
+    </footer>
+
+    <script src="catering.js"></script>
+</body>
+</html>
