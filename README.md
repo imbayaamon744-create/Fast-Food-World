@@ -19,5 +19,5 @@ No build step or package installation is required. Open `index.html` in a browse
 python -m http.server 8000
 ```
 
-Then visit <http://localhost:8000>. The location map is embedded from Google Maps and needs an internet connection.
+Then visit <http://localhost:8000>.The location map is embedded from Google Maps and needs an internet connection.
 
