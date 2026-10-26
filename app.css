@@ -26,7 +26,7 @@
             color: var(--color-ink);
             background-image:
                 linear-gradient(rgba(24, 15, 10, 0.12), rgba(24, 15, 10, 0.28)),
-                url('images/backgroung.png');
+                url('images/background.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#21150f">
     <title>Order Online | Fast Food Restaurant</title>
+    <link rel="icon" type="image/png" href="/images/background.png">
     <link rel="stylesheet" href="app.css">
     <style>
         .order-page {
@@ -189,6 +190,65 @@
             background: rgba(184, 94, 34, 0.2);
         }
 
+        .remove-confirmation-dialog {
+            width: min(420px, calc(100% - 32px));
+            margin: auto;
+            padding: 24px;
+            color: var(--color-ink);
+            background: var(--color-panel);
+            border: 1px solid var(--color-wood);
+            border-radius: 14px;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+        }
+
+        .remove-confirmation-dialog::backdrop {
+            background: rgba(0, 0, 0, 0.68);
+            backdrop-filter: blur(3px);
+        }
+
+        .remove-confirmation-dialog h2 {
+            margin-bottom: 8px;
+            color: var(--color-gold);
+            font-size: 1.3rem;
+        }
+
+        .remove-confirmation-dialog p {
+            margin-bottom: 20px;
+            color: var(--color-muted);
+        }
+
+        .remove-confirmation-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .remove-confirmation-actions button {
+            min-height: 42px;
+            padding: 9px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+        }
+
+        .cancel-remove-btn {
+            color: var(--color-ink);
+            background: transparent;
+            border: 1px solid var(--color-wood);
+        }
+
+        .confirm-remove-btn {
+            color: #fff4ed;
+            background: #8c382d;
+            border: 1px solid #a64b3d;
+        }
+
+        .remove-confirmation-actions button:focus-visible {
+            outline: 2px solid var(--color-gold);
+            outline-offset: 2px;
+        }
+
         .cart-totals {
             display: grid;
             gap: 8px;
@@ -269,21 +329,21 @@
                             Choose a snack or drink
                             <select id="menu-item" name="menu-item">
                                 <optgroup label="Signature samosas">
-                                    <option value="beef-samosa" data-name="Beef Samosa" data-price="100">Beef Samosa — KSh 100</option>
-                                    <option value="chicken-samosa" data-name="Chicken Samosa" data-price="100">Chicken Samosa — KSh 100</option>
+                                    <option value="beef-samosa" data-name="Beef Samosa" data-price="50">Beef Samosa — KSh 50</option>
+                                    <option value="chicken-samosa" data-name="Chicken Samosa" data-price="60">Chicken Samosa — KSh 60</option>
                                     <option value="veggie-samosa" data-name="Vegetable Samosa" data-price="80">Vegetable Samosa — KSh 80</option>
-                                    <option value="crispy-chicken-samosa" data-name="Crispy Chicken Samosa" data-price="120">Crispy Chicken Samosa — KSh 120</option>
+                                    <option value="crispy-chicken-samosa" data-name="Crispy Chicken Samosa" data-price="80">Crispy Chicken Samosa — KSh 80</option>
                                 </optgroup>
                                 <optgroup label="Snacks &amp; treats">
-                                    <option value="bhajias" data-name="Crispy Potato Bhajias" data-price="150">Crispy Potato Bhajias — KSh 150</option>
-                                    <option value="spring-rolls" data-name="Spring Rolls" data-price="120">Spring Rolls — KSh 120</option>
+                                    <option value="bhajias" data-name="Crispy Potato Bhajias" data-price="80">Crispy Potato Bhajias — KSh 80</option>
+                                    <option value="spring-rolls" data-name="Spring Rolls" data-price="100">Spring Rolls — KSh 100</option>
                                     <option value="smokie-bites" data-name="Sausages &amp; Smokie Bites" data-price="100">Sausages &amp; Smokie Bites — KSh 100</option>
                                 </optgroup>
                                 <optgroup label="Drinks &amp; dips">
                                     <option value="soda" data-name="Chilled Soda" data-price="80">Chilled Soda — KSh 80</option>
                                     <option value="lemonade" data-name="Fresh Lemonade" data-price="120">Fresh Lemonade — KSh 120</option>
                                     <option value="iced-tea" data-name="Iced Tea" data-price="100">Iced Tea — KSh 100</option>
-                                    <option value="smoothie" data-name="Fruit Smoothie" data-price="180">Fruit Smoothie — KSh 180</option>
+                                    <option value="smoothie" data-name="Fruit Smoothie" data-price="80">Fruit Smoothie — KSh 80</option>
                                     <option value="spiced-chai" data-name="Spiced Chai" data-price="80">Spiced Chai — KSh 80</option>
                                     <option value="tamarind-dip" data-name="Tamarind Dip" data-price="40">Tamarind Dip — KSh 40</option>
                                     <option value="mint-chutney" data-name="Fresh Mint Chutney" data-price="40">Fresh Mint Chutney — KSh 40</option>
@@ -298,7 +358,7 @@
                     <button class="add-item-btn" type="submit">Add to order</button>
                 </form>
 
-                <h3>Your basket <span id="item-count">(0 items)</span></h3>
+                <h3 id="basket-heading" tabindex="-1">Your basket <span id="item-count">(0 items)</span></h3>
                 <ul class="cart-items" id="cart-items" aria-live="polite">
                     <li class="empty-cart" id="empty-cart">Your basket is empty. Add something tasty to get started.</li>
                 </ul>
@@ -343,6 +403,15 @@
             </section>
         </div>
     </main>
+
+    <dialog class="remove-confirmation-dialog" id="remove-confirmation" aria-labelledby="remove-confirmation-title" aria-describedby="remove-confirmation-message">
+        <h2 id="remove-confirmation-title">Remove item?</h2>
+        <p id="remove-confirmation-message"></p>
+        <div class="remove-confirmation-actions">
+            <button class="cancel-remove-btn" id="cancel-remove" type="button">Keep item</button>
+            <button class="confirm-remove-btn" id="confirm-remove" type="button">Remove item</button>
+        </div>
+    </dialog>
 
     <script src="app.js"></script>
 </body>
