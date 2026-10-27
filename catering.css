@@ -27,12 +27,6 @@ body.catering-body {
     text-decoration: none;
 }
 
-.catering-nav-links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 18px;
-}
 
 .catering-nav a:hover,
 .catering-nav a:focus-visible {
