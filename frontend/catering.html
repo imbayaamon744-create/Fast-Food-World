@@ -4,16 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#2b2822">
-    <title>Catering &amp; Event Bookings | Fast Food Restaurant</title>
+    <title>Catering requests | Fast Food Restaurant</title>
     <link rel="icon" type="image/png" href="images/background.png">
     <link rel="stylesheet" href="app.css">
     <link rel="stylesheet" href="catering.css">
 </head>
 <body class="catering-body">
-    <nav class="catering-nav" aria-label="Main navigation">
-        <a href="index.html">Fast Food Restaurant</a>
-      
-    </nav>
+    <noscript><p class="catering-result">JavaScript is required to validate and save a catering request. No request is sent without a saved confirmation.</p></noscript>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+<nav class="site-nav" aria-label="Main navigation">
+<a class="site-brand" href="index.html"><span aria-hidden="true">◈</span> Fast Food Restaurant</a>
+<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-links" hidden>Menu</button>
+<div id="site-links" class="site-links"><a href="index.html">Home</a><a href="menu.html">Menu</a><a href="catering.html">Catering</a><a href="story.html">Our story</a><a href="contact.html">Contact</a><a class="landing-nav-order" href="order.html">Order online <span aria-hidden="true">↗</span></a></div>
+</nav>
 
     <header class="catering-hero">
         <div class="catering-hero__content">
@@ -24,7 +27,7 @@
         </div>
     </header>
 
-    <main class="catering-main">
+    <main tabindex="-1" id="main-content" class="catering-main">
         <section id="packages" aria-labelledby="packages-heading">
             <div class="catering-section-heading">
                 <p class="catering-eyebrow">Made for your occasion</p>
@@ -57,22 +60,22 @@
                     <button class="catering-package__button" type="button" data-package="Deluxe">Choose Deluxe</button>
                 </article>
             </div>
-            <p class="catering-pricing-note">Catering prices have not yet been set on this website. We’ll provide a quote based on your guest count, menu and location; a booking is confirmed only after we reply.</p>
+            <p class="catering-pricing-note">Catering prices have not yet been set on this website. We’ll provide a quote based on your guest count, menu and location; a booking needs an explicit agreement on availability, menu and price.</p>
         </section>
 
         <section class="catering-booking" id="booking" aria-labelledby="booking-heading">
             <div class="catering-form-card">
-                <h2 id="booking-heading">Request a catering booking</h2>
-                <p class="catering-form-intro">Share your event details. Selecting a date will automatically show you the day of the week.</p>
+                <h2 id="booking-heading">Request catering</h2>
+                <p class="catering-form-intro">Share your event details. Submitting a catering request does not confirm a booking: it stays pending until an administrator confirms or declines it. Selecting a date shows the day of the week.</p>
 
                 <form class="catering-form" id="catering-booking-form">
                     <label>
                         Your name
-                        <input name="customerName" type="text" autocomplete="name" required>
+                        <input name="customerName" maxlength="100" type="text" autocomplete="name" required>
                     </label>
                     <label>
                         Phone number
-                        <input name="phone" type="tel" autocomplete="tel" placeholder="e.g. 0712 345 678" required>
+                        <input name="phone" maxlength="30" type="tel" autocomplete="tel" placeholder="e.g. 0712 345 678" required>
                     </label>
                     <label>
                         Event date
@@ -84,11 +87,11 @@
                     </label>
                     <label>
                         Event location
-                        <input name="location" type="text" autocomplete="street-address" placeholder="Town, venue or full address" required>
+                        <input name="location" maxlength="400" type="text" autocomplete="street-address" placeholder="Town, venue or full address" required>
                     </label>
                     <label>
                         Number of guests
-                        <input name="guestCount" type="number" min="1" step="1" placeholder="e.g. 30" required>
+                        <input name="guestCount" type="number" min="1" max="10000" step="1" placeholder="e.g. 30" required>
                     </label>
                     <label class="full-width">
                         Package
@@ -102,24 +105,24 @@
                     </label>
                     <label class="full-width">
                         Event details or food preferences <span>(optional)</span>
-                        <textarea name="eventDetails" placeholder="Tell us about the occasion, menu preferences or any other requests."></textarea>
+                        <textarea maxlength="2000" name="eventDetails" placeholder="Tell us about the occasion, menu preferences or any other requests."></textarea>
                     </label>
-                    <button class="catering-submit full-width" type="submit">Prepare booking request</button>
+                    <button class="catering-submit full-width" type="submit">Send catering request</button>
                 </form>
 
-                <div class="catering-result" id="booking-result" role="status" aria-live="polite" hidden>
-                    <h3>Your request is ready</h3>
-                    <p id="booking-summary"></p>
-                    <p>This is a request, not a confirmed booking. Email it to us and wait for our reply to confirm availability and price.</p>
-                    <p><a id="booking-email-link" href="mailto:info@fastfoodrestaurant.com">Email booking request</a></p>
+                <p id="catering-message" role="status" aria-live="polite"></p>
+                <p id="catering-error" class="catering-result" role="alert" tabindex="-1" hidden></p>
+                <div class="catering-result" id="booking-result" tabindex="-1" role="status" aria-live="polite" hidden>
+                    <h3>Catering request received</h3><p id="booking-summary"></p>
+                    <p>Submitting this request does not confirm a booking. An administrator must explicitly confirm or decline it after discussing availability, menu and price. Contact the restaurant for updates.</p>
                 </div>
             </div>
 
             <aside class="catering-help-card">
                 <h2>What happens next?</h2>
-                <p>After you prepare your request, use the email link to send the event details to our team. We’ll discuss the menu, availability and final price with you.</p>
-                <p>Need help? Call <a href="tel:+254700000000">+254 700 000 000</a> or email <a href="mailto:info@fastfoodrestaurant.com">info@fastfoodrestaurant.com</a>.</p>
-                <p>Bookings are only confirmed after our team responds.</p>
+                <p>After your request is saved, the restaurant will review the event details. Availability, menu and price must be agreed before a booking is confirmed. This form sends no automated messages.</p>
+                <p><span data-contact>Loading restaurant contact details…</span></p>
+                <p>A reply alone does not confirm a booking. Availability, menu and price must be agreed.</p>
             </aside>
         </section>
     </main>
@@ -128,6 +131,8 @@
         <p>&copy; 2026 Fast Food Restaurant. Fresh &bull; Tasty &bull; Affordable</p>
     </footer>
 
-    <script src="catering.js"></script>
+    <script src="catering.js" type="module"></script>
+<script src="shared.js" type="module"></script>
+<script src="local-help.js" defer></script>
 </body>
 </html>

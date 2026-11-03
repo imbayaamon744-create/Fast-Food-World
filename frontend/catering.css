@@ -3,7 +3,7 @@ body.catering-body {
     color: var(--color-ink);
     background-color: var(--color-espresso);
     background-image:
-        linear-gradient(rgba(24, 15, 10, 0.12), rgba(24, 15, 10, 0.28)),
+        linear-gradient(rgba(24, 15, 10, 0.78), rgba(24, 15, 10, 0.88)),
         url("images/background.png");
     background-size: cover;
     background-position: center;

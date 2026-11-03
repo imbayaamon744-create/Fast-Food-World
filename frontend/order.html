@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#21150f">
+    <meta name="referrer" content="no-referrer">
+    <title>Order Online | Fast Food Restaurant</title>
+    <link rel="icon" type="image/png" href="images/background.png">
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="order.css">
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+<nav class="site-nav" aria-label="Main navigation">
+<a class="site-brand" href="index.html"><span aria-hidden="true">◈</span> Fast Food Restaurant</a>
+<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-links" hidden>Menu</button>
+<div id="site-links" class="site-links"><a href="index.html">Home</a><a href="menu.html">Menu</a><a href="catering.html">Catering</a><a href="story.html">Our story</a><a href="contact.html">Contact</a><a class="landing-nav-order" href="order.html">Order online <span aria-hidden="true">↗</span></a></div>
+</nav>
+    <main tabindex="-1" id="main-content" class="order-page">
+        <header class="order-heading">
+            <h1>Make it a delicious day</h1>
+            <p>Choose your favourites, build your order, and tell us how to get it to you.</p>
+        </header>
+        <noscript><p class="order-message">JavaScript is required to check current prices and send an order.</p></noscript>
+        <p id="order-message" class="order-message" role="status" aria-live="polite">Loading the current menu…</p>
+        <p id="order-error" class="order-message error-message" role="alert" tabindex="-1" hidden></p>
+        <div class="order-layout" id="order-builder">
+            <section class="order-panel" aria-labelledby="menu-heading">
+                <h2 id="menu-heading">Build your order</h2>
+                <button id="refresh-menu" class="secondary-btn" type="button">Refresh menu &amp; availability</button>
+                <form class="add-item-form" id="add-item-form">
+                    <fieldset id="menu-controls" disabled>
+                        <div class="field-row">
+                            <label for="menu-item">Choose a snack or drink
+                                <select id="menu-item" name="menu-item" required><option value="">Loading menu…</option></select>
+                            </label>
+                            <label for="item-quantity">Quantity
+                                <input id="item-quantity" name="item-quantity" type="number" min="1" max="20" step="1" value="1" required>
+                            </label>
+                        </div>
+                        <button class="add-item-btn" type="submit">Add to basket</button>
+                    </fieldset>
+                </form>
+                <div class="shared-menu" data-menu tabindex="0" role="region" aria-label="Menu search and products">
+<div class="menu-tools"><label>Search menu<input type="search" data-menu-search maxlength="100" placeholder="Find your favourites"></label><label>Category<select data-menu-category><option value="">All categories</option></select></label><label>Sort by<select data-menu-sort><option value="default">Menu order</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option><option value="name">Name: A to Z</option></select></label><label class="check-label"><input type="checkbox" data-menu-available> Available only</label><button class="secondary-btn" type="button" data-menu-refresh>Reload menu</button></div>
+<p data-menu-message role="status" aria-live="polite">Loading menu…</p><div class="product-grid" data-menu-grid></div></div><h3 id="basket-heading" tabindex="-1">Your basket <span id="item-count">(0 items)</span></h3>
+                <ul class="cart-items" id="cart-items" aria-label="Basket items"></ul>
+                <p class="order-note">Use Add to basket above, then fill in your details and choose Review my order.</p>
+                <p class="order-note">Prices are in Kenyan shillings. Your basket saves item choices and quantities on this device; prices are checked again before you order.</p>
+            </section>
+            <section class="order-panel" aria-labelledby="details-heading">
+                <h2 id="details-heading">Your order details</h2>
+                <form class="order-form" id="order-form">
+                    <fieldset id="details-controls" disabled>
+                        <label for="customer-name">Your name
+                            <input id="customer-name" name="customer-name" type="text" autocomplete="name" maxlength="100" required>
+                        </label>
+                        <label for="customer-phone">Phone number
+                            <input id="customer-phone" name="customer-phone" type="tel" autocomplete="tel" maxlength="30" placeholder="e.g. 0712 345 678" required>
+                        </label>
+                        <label for="fulfilment">How would you like your order?
+                            <select id="fulfilment" name="fulfilment">
+                                <option value="PICKUP">Pickup</option><option value="DELIVERY">Delivery</option>
+                            </select>
+                        </label>
+                        <label id="address-field" for="delivery-address" hidden>Delivery address
+                            <input id="delivery-address" name="delivery-address" type="text" autocomplete="street-address" maxlength="400" disabled>
+                        </label>
+                        <label for="order-notes">Special instructions <span class="order-note">(optional)</span>
+                            <textarea id="order-notes" name="order-notes" maxlength="1000" placeholder="Allergies, preferred sauce, or anything else we should know"></textarea>
+                        </label>
+                        <div class="cart-totals" aria-live="polite" aria-label="Estimated totals">
+                            <div class="total-row"><span>Estimated subtotal</span><span id="subtotal">—</span></div>
+                            <div class="total-row"><span>Delivery</span><span id="delivery-fee">—</span></div>
+                            <div class="total-row grand-total"><span>Estimated total</span><span id="grand-total">—</span></div>
+                        </div>
+                        <button class="place-order-btn" id="review-order" type="submit">Review my order</button>
+                    </fieldset>
+                </form>
+                <p class="order-note">Review your details and current total before sending your order.</p>
+            </section>
+        </div>
+
+        <section id="order-review" class="order-panel checkout-panel" aria-labelledby="review-heading" hidden>
+            <h2 id="review-heading" tabindex="-1">Review your order</h2>
+            <p>Check everything below. Your order is sent only when you choose “Place order”.</p>
+            <ul id="review-items" class="receipt-items" aria-label="Reviewed items"></ul>
+            <dl id="review-details" class="receipt-details"></dl>
+            <div class="cart-totals">
+                <div class="total-row"><span>Subtotal</span><span id="review-subtotal"></span></div>
+                <div class="total-row"><span>Delivery</span><span id="review-delivery"></span></div>
+                <div class="total-row grand-total"><span>Total</span><span id="review-total"></span></div>
+            </div>
+            <div class="checkout-actions">
+                <button id="edit-order" class="secondary-btn" type="button">Edit order</button>
+                <button id="place-order" class="place-order-btn" type="button">Place order</button>
+                <button id="check-submission" class="secondary-btn" type="button" hidden>Check whether it was saved</button>
+            </div>
+        </section>
+
+        <section id="order-confirmation" class="order-panel checkout-panel" aria-labelledby="confirmation-heading" hidden>
+            <h2 id="confirmation-heading" tabindex="-1">Order received</h2>
+            <p id="confirmation-message">Your order is accepted. Track preparation and fulfilment using your private link.</p>
+            <p>Order reference: <strong id="order-reference" class="order-reference"></strong></p>
+            <p id="confirmation-status"></p>
+            <ul id="confirmation-items" class="receipt-items" aria-label="Saved order items"></ul>
+            <p class="grand-total">Total: <strong id="confirmation-total"></strong></p>
+            <p><a id="tracking-link" class="tracking-link" href="track.html">Track this order privately</a></p>
+            <p class="order-note">Save your private tracking link. Anyone with the link can see the order status and items, but not your contact details or address.</p>
+            <button id="new-order" class="secondary-btn" type="button">Start another order</button>
+        </section>
+    </main>
+    <dialog class="remove-confirmation-dialog" id="remove-confirmation" aria-labelledby="remove-confirmation-title" aria-describedby="remove-confirmation-message">
+        <h2 id="remove-confirmation-title">Remove item?</h2>
+        <p id="remove-confirmation-message"></p>
+        <div class="remove-confirmation-actions">
+            <button class="cancel-remove-btn" id="cancel-remove" type="button">Keep item</button>
+            <button class="confirm-remove-btn" id="confirm-remove" type="button">Remove item</button>
+        </div>
+    </dialog>
+    <script src="order.js" type="module"></script>
+<script src="shared.js" type="module"></script>
+<script src="local-help.js" defer></script>
+</body>
+</html>

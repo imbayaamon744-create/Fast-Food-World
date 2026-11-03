@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#21150f">
+    <meta name="referrer" content="no-referrer">
+    <title>Track your order | Fast Food Restaurant</title>
+    <link rel="icon" type="image/png" href="images/background.png">
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="order.css">
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+<nav class="site-nav" aria-label="Main navigation">
+<a class="site-brand" href="index.html"><span aria-hidden="true">◈</span> Fast Food Restaurant</a>
+<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-links" hidden>Menu</button>
+<div id="site-links" class="site-links"><a href="index.html">Home</a><a href="menu.html">Menu</a><a href="catering.html">Catering</a><a href="story.html">Our story</a><a href="contact.html">Contact</a><a class="landing-nav-order" href="order.html">Order online <span aria-hidden="true">↗</span></a></div>
+</nav>
+    <main tabindex="-1" id="main-content" class="order-page">
+        <header class="order-heading"><h1>Your order, at a glance</h1><p>Keep this private link to follow your order.</p></header>
+        <noscript><p class="order-message">JavaScript is required to load private order tracking.</p></noscript>
+        <p id="tracking-message" class="order-message" role="status" aria-live="polite">Loading your order…</p>
+        <p id="tracking-error" class="order-message error-message" role="alert" hidden></p>
+        <section id="tracking-result" class="order-panel checkout-panel" aria-labelledby="tracking-heading" hidden>
+            <h2 id="tracking-heading" tabindex="-1">Order status</h2>
+            <p>Reference: <strong id="tracking-reference" class="order-reference"></strong></p>
+            <p id="tracking-status" class="tracking-status"></p>
+            <p id="tracking-fulfilment"></p>
+            <ul id="tracking-items" class="receipt-items" aria-label="Order items"></ul>
+            <div class="cart-totals">
+                <div class="total-row"><span>Subtotal</span><span id="tracking-subtotal"></span></div>
+                <div class="total-row"><span>Delivery</span><span id="tracking-delivery"></span></div>
+                <div class="total-row grand-total"><span>Total</span><span id="tracking-total"></span></div>
+            </div>
+            <h3>Status history</h3>
+            <ol id="tracking-history" class="tracking-history"></ol>
+        </section>
+        <button id="refresh-tracking" class="secondary-btn" type="button">Refresh status</button>
+        <p class="order-note">This page does not display your name, phone number, delivery address or instructions.</p>
+    </main>
+    <script src="track.js" type="module"></script>
+<script src="shared.js" type="module"></script>
+<script src="local-help.js" defer></script>
+</body>
+</html>

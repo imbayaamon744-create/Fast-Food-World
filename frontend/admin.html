@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="referrer" content="no-referrer"><title>Restaurant dashboard</title><link rel="stylesheet" href="app.css"><link rel="stylesheet" href="admin.css"></head>
+<body><a class="skip-link" href="#main-content">Skip to content</a>
+<nav class="site-nav" aria-label="Main navigation">
+<a class="site-brand" href="index.html"><span aria-hidden="true">◈</span> Fast Food Restaurant</a>
+<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-links" hidden>Menu</button>
+<div id="site-links" class="site-links"><a href="index.html">Home</a><a href="menu.html">Menu</a><a href="catering.html">Catering</a><a href="story.html">Our story</a><a href="contact.html">Contact</a><a class="landing-nav-order" href="order.html">Order online <span aria-hidden="true">↗</span></a></div>
+</nav>
+<main tabindex="-1" id="main-content" class="admin-page">
+<h1>Restaurant dashboard</h1><p id="admin-message" role="status" aria-live="polite">Checking your session…</p><p id="admin-error" class="error-message" role="alert" tabindex="-1" hidden></p>
+<noscript>JavaScript is required to use the dashboard.</noscript>
+<section id="login-panel" class="admin-panel" hidden><h2>Administrator sign in</h2><form id="login-form">
+<label>Email<input name="email" type="email" autocomplete="username" maxlength="254" required></label>
+<label>Password<input name="password" type="password" autocomplete="current-password" maxlength="128" required></label>
+<button type="submit">Sign in</button></form><p>Administrator access is created privately by the restaurant owner.</p></section>
+<div id="dashboard" hidden><div class="admin-toolbar"><p id="admin-identity"></p><button id="logout" type="button">Sign out</button></div>
+<nav class="admin-tabs" aria-label="Dashboard sections"><button type="button" data-view="orders">Orders</button><button type="button" data-view="menu">Menu &amp; categories</button><button type="button" data-view="settings">Restaurant settings</button><button type="button" data-view="catering">Catering requests</button></nav>
+<section class="admin-panel"><h2 id="view-heading" tabindex="-1"></h2><div id="admin-content"></div></section></div>
+</main><script src="shared.js" type="module"></script><script src="admin.js" type="module"></script><script src="local-help.js" defer></script>
+</body></html>

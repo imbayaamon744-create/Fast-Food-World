@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "outDir": "backend/dist",
+    "rootDir": "backend",
+    "noUncheckedIndexedAccess": true,
+    "allowJs": true
+  },
+  "include": [
+    "backend/server/**/*.ts",
+    "backend/prisma/**/*.ts",
+    "backend/scripts/**/*.ts",
+    "backend/tests/**/*.ts",
+    "backend/prisma.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

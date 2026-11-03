@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Browse our food, current prices and availability. Search, filter and sort the Fast Food Restaurant menu before ordering.">
+  <title>Our Menu | Fast Food Restaurant</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <nav class="site-nav" aria-label="Main navigation">
+    <a class="site-brand" href="index.html">Fast Food Restaurant</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-links" hidden>Menu</button>
+    <div id="site-links" class="site-links"><a href="index.html">Home</a><a href="menu.html">Menu</a><a href="catering.html">Catering</a><a href="story.html">Our story</a><a href="contact.html">Contact</a><a class="landing-nav-order" href="order.html">Order online <span aria-hidden="true">↗</span></a></div>
+  </nav>
+  <main id="main-content" class="menu-page" tabindex="-1">
+    <div class="menu-intro"><p class="landing-eyebrow">FIND YOUR NEXT FAVOURITE</p><h1>Our menu</h1><p>Take your time. Browse our food, compare prices, and find something you love before starting an order. All prices are in Kenyan shillings.</p></div>
+    <section data-menu aria-label="Browse the menu">
+      <div class="menu-tools"><label>Search menu<input type="search" data-menu-search maxlength="100" placeholder="Find your favourites"></label><label>Category<select data-menu-category><option value="">All categories</option></select></label><label>Sort by<select data-menu-sort><option value="default">Menu order</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option><option value="name">Name: A to Z</option></select></label><label class="check-label"><input type="checkbox" data-menu-available> Available only</label><button class="secondary-btn" type="button" data-menu-refresh>Reload menu</button></div>
+      <p data-menu-message role="status" aria-live="polite">Loading the current menu…</p>
+      <div class="product-grid" data-menu-grid></div>
+    </section>
+    <noscript><p>Enable JavaScript to load the current menu and prices.</p></noscript>
+    <a class="landing-button" href="order.html">Start an order <span aria-hidden="true">↗</span></a>
+  </main>
+  <script src="menu.js" type="module"></script>
+  <script src="local-help.js" defer></script>
+</body>
+</html>
