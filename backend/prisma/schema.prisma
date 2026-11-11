@@ -1,11 +1,151 @@
 generator client {
-  provider = "prisma-client"
-  output = "../server/generated/prisma"
+  provider     = "prisma-client"
+  output       = "../server/generated/prisma"
   moduleFormat = "esm"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model Category {
+  id        String     @id @default(uuid()) @db.Uuid
+  slug      String     @unique @db.VarChar(80)
+  name      String     @db.VarChar(80)
+  sortOrder Int        @default(0)
+  items     MenuItem[]
+}
+
+model MenuItem {
+  id          String      @id @default(uuid()) @db.Uuid
+  slug        String      @unique @db.VarChar(80)
+  name        String      @db.VarChar(120)
+  description String      @db.VarChar(600)
+  priceMinor  Int
+  available   Boolean     @default(true)
+  imageUrl    String?     @db.VarChar(1000)
+  sortOrder   Int         @default(0)
+  categoryId  String      @db.Uuid
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  category    Category    @relation(fields: [categoryId], references: [id])
+  orderItems  OrderItem[]
+
+  @@index([categoryId, available])
+}
+
+model RestaurantSettings {
+  id               String   @id @default("restaurant")
+  name             String   @default("Fast Food Restaurant") @db.VarChar(120)
+  currency         String   @default("KES") @db.VarChar(3)
+  timezone         String   @default("Africa/Nairobi") @db.VarChar(80)
+  deliveryFeeMinor Int      @default(15000)
+  acceptingOrders  Boolean  @default(true)
+  pickupEnabled    Boolean  @default(true)
+  deliveryEnabled  Boolean  @default(true)
+  address          String   @db.VarChar(400)
+  phone            String?  @db.VarChar(40)
+  email            String?  @db.VarChar(254)
+  openingHours     String   @db.VarChar(300)
+  updatedAt        DateTime @updatedAt
+}
+
+model Admin {
+  id           String               @id @default(uuid()) @db.Uuid
+  email        String               @unique @db.VarChar(254)
+  passwordHash String
+  active       Boolean              @default(true)
+  createdAt    DateTime             @default(now())
+  history      OrderStatusHistory[]
+}
+
+model Order {
+  id                String               @id @default(uuid()) @db.Uuid
+  idempotencyHash   String               @unique @db.VarChar(64)
+  requestHash       String               @db.VarChar(64)
+  trackingTokenHash String               @unique @db.VarChar(64)
+  customerName      String               @db.VarChar(100)
+  phone             String               @db.VarChar(40)
+  fulfilment        Fulfilment
+  deliveryAddress   String?              @db.VarChar(400)
+  notes             String?              @db.VarChar(1000)
+  status            OrderStatus          @default(ACCEPTED)
+  currency          String               @default("KES") @db.VarChar(3)
+  subtotalMinor     Int
+  deliveryFeeMinor  Int
+  totalMinor        Int
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  items             OrderItem[]
+  history           OrderStatusHistory[]
+
+  @@index([status, createdAt])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id             String   @id @default(uuid()) @db.Uuid
+  orderId        String   @db.Uuid
+  menuItemId     String   @db.Uuid
+  name           String   @db.VarChar(120)
+  unitPriceMinor Int
+  quantity       Int
+  lineTotalMinor Int
+  menuItem       MenuItem @relation(fields: [menuItemId], references: [id])
+  order          Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@unique([orderId, menuItemId])
+}
+
+model OrderStatusHistory {
+  id         String       @id @default(uuid()) @db.Uuid
+  orderId    String       @db.Uuid
+  fromStatus OrderStatus?
+  toStatus   OrderStatus
+  adminId    String?      @db.Uuid
+  createdAt  DateTime     @default(now())
+  reason     String?      @db.VarChar(1000)
+  admin      Admin?       @relation(fields: [adminId], references: [id])
+  order      Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId, createdAt])
+}
+
+model CateringRequest {
+  id              String         @id @default(uuid()) @db.Uuid
+  idempotencyHash String         @unique @db.VarChar(64)
+  requestHash     String         @db.VarChar(64)
+  customerName    String         @db.VarChar(100)
+  phone           String         @db.VarChar(40)
+  eventDate       DateTime       @db.Date
+  location        String         @db.VarChar(400)
+  guestCount      Int
+  package         String         @db.VarChar(30)
+  eventDetails    String?        @db.VarChar(2000)
+  status          CateringStatus @default(PENDING)
+  adminNotes      String?        @db.VarChar(2000)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  quoteMinor      Int?
+
+  @@index([status, createdAt])
+}
+
+model RateLimitBucket {
+  key       String   @id @db.VarChar(64)
+  hits      Int
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}
+
+model Session {
+  sid    String   @id @db.VarChar
+  sess   Json     @db.Json
+  expire DateTime @db.Timestamp(6)
+
+  @@index([expire])
+  @@map("sessions")
 }
 
 enum Fulfilment {
@@ -24,145 +164,10 @@ enum OrderStatus {
 }
 
 enum CateringStatus {
-  PENDING
-  CONFIRMED
-  DECLINED
-  // Retained for historical records; never infer a booking decision.
   REQUESTED
   CONTACTED
   CLOSED
-}
-
-model Category {
-  id String @id @default(uuid()) @db.Uuid
-  slug String @unique @db.VarChar(80)
-  name String @db.VarChar(80)
-  sortOrder Int @default(0)
-  items MenuItem[]
-}
-
-model MenuItem {
-  id String @id @default(uuid()) @db.Uuid
-  slug String @unique @db.VarChar(80)
-  name String @db.VarChar(120)
-  description String @db.VarChar(600)
-  priceMinor Int
-  available Boolean @default(true)
-  imageUrl String? @db.VarChar(1000)
-  sortOrder Int @default(0)
-  categoryId String @db.Uuid
-  category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
-  orderItems OrderItem[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@index([categoryId, available])
-}
-
-model RestaurantSettings {
-  id String @id @default("restaurant")
-  name String @default("Fast Food Restaurant") @db.VarChar(120)
-  currency String @default("KES") @db.VarChar(3)
-  timezone String @default("Africa/Nairobi") @db.VarChar(80)
-  deliveryFeeMinor Int @default(15000)
-  acceptingOrders Boolean @default(true)
-  pickupEnabled Boolean @default(true)
-  deliveryEnabled Boolean @default(true)
-  address String @db.VarChar(400)
-  phone String? @db.VarChar(40)
-  email String? @db.VarChar(254)
-  openingHours String @db.VarChar(300)
-  updatedAt DateTime @updatedAt
-}
-
-model Admin {
-  id String @id @default(uuid()) @db.Uuid
-  email String @unique @db.VarChar(254)
-  passwordHash String
-  active Boolean @default(true)
-  createdAt DateTime @default(now())
-  history OrderStatusHistory[]
-}
-
-model Order {
-  id String @id @default(uuid()) @db.Uuid
-  idempotencyHash String @unique @db.VarChar(64)
-  requestHash String @db.VarChar(64)
-  trackingTokenHash String @unique @db.VarChar(64)
-  customerName String @db.VarChar(100)
-  phone String @db.VarChar(40)
-  fulfilment Fulfilment
-  deliveryAddress String? @db.VarChar(400)
-  notes String? @db.VarChar(1000)
-  status OrderStatus @default(ACCEPTED)
-  currency String @default("KES") @db.VarChar(3)
-  subtotalMinor Int
-  deliveryFeeMinor Int
-  totalMinor Int
-  items OrderItem[]
-  history OrderStatusHistory[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@index([status, createdAt])
-  @@index([createdAt])
-}
-
-model OrderItem {
-  id String @id @default(uuid()) @db.Uuid
-  orderId String @db.Uuid
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  menuItemId String @db.Uuid
-  menuItem MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Restrict)
-  name String @db.VarChar(120)
-  unitPriceMinor Int
-  quantity Int
-  lineTotalMinor Int
-  @@unique([orderId, menuItemId])
-}
-
-model OrderStatusHistory {
-  id String @id @default(uuid()) @db.Uuid
-  orderId String @db.Uuid
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  fromStatus OrderStatus?
-  toStatus OrderStatus
-  reason String? @db.VarChar(1000)
-  adminId String? @db.Uuid
-  admin Admin? @relation(fields: [adminId], references: [id], onDelete: SetNull)
-  createdAt DateTime @default(now())
-  @@index([orderId, createdAt])
-}
-
-model CateringRequest {
-  id String @id @default(uuid()) @db.Uuid
-  idempotencyHash String @unique @db.VarChar(64)
-  requestHash String @db.VarChar(64)
-  customerName String @db.VarChar(100)
-  phone String @db.VarChar(40)
-  eventDate DateTime @db.Date
-  location String @db.VarChar(400)
-  guestCount Int
-  package String @db.VarChar(30)
-  eventDetails String? @db.VarChar(2000)
-  status CateringStatus @default(PENDING)
-  adminNotes String? @db.VarChar(2000)
-  quoteMinor Int?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@index([status, createdAt])
-}
-
-model RateLimitBucket {
-  key String @id @db.VarChar(64)
-  hits Int
-  expiresAt DateTime
-  @@index([expiresAt])
-}
-
-// Owned by connect-pg-simple; Prisma migrations create the table.
-model Session {
-  sid String @id @db.VarChar
-  sess Json @db.Json
-  expire DateTime @db.Timestamp(6)
-  @@index([expire])
-  @@map("sessions")
+  PENDING
+  CONFIRMED
+  DECLINED
 }
